@@ -26,8 +26,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\UUID;
 use specter\Specter;
 
-class SpecterInterface implements SourceInterface
-{
+class SpecterInterface implements SourceInterface {
     /** @var  SpecterPlayer[]|\SplObjectStorage */
     private $sessions;
     /** @var  Specter */
@@ -45,8 +44,7 @@ class SpecterInterface implements SourceInterface
         $this->replyStore = [];
     }
 
-    public function start(): void
-    {
+    public function start(): void {
         //NOOP
     }
 
@@ -60,8 +58,7 @@ class SpecterInterface implements SourceInterface
      *
      * @return int
      */
-    public function putPacket(Player $player, DataPacket $packet, bool $needACK = false, bool $immediate = true): ?int
-    {
+    public function putPacket(Player $player, DataPacket $packet, bool $needACK = false, bool $immediate = true): ?int {
         if ($player instanceof SpecterPlayer) {
             //$this->specter->getLogger()->info(get_class($packet));
             switch (get_class($packet)) {
@@ -120,9 +117,9 @@ class SpecterInterface implements SourceInterface
                             $pk->x = $player->getPosition()->x;
                             $pk->y = $player->getPosition()->y;
                             $pk->z = $player->getPosition()->z;
-                            $pk->yaw = $player->getYaw();
-                            $pk->pitch = $player->getPitch();
-                            $pk->bodyYaw = $player->getYaw();
+                            $pk->yaw = $player->getLocation()->getYaw();
+                            $pk->pitch = $player->getLocation()->getPitch();
+                            $pk->bodyYaw = $player->getLocation()->getYaw();
                             $pk->onGround = true;
                             $pk->handle($player);*/
                             break;
@@ -175,8 +172,7 @@ class SpecterInterface implements SourceInterface
      * @param string $reason
      *
      */
-    public function close(Player $player, string $reason = "unknown reason"): void
-    {
+    public function close(Player $player, string $reason = "unknown reason"): void {
         $this->sessions->detach($player);
         unset($this->ackStore[$player->getName()]);
         unset($this->replyStore[$player->getName()]);
@@ -185,13 +181,11 @@ class SpecterInterface implements SourceInterface
     /**
      * @param string $name
      */
-    public function setName(string $name): void
-    {
+    public function setName(string $name): void {
         // TODO: Implement setName() method.
     }
 
-    public function openSession($username, $address = "SPECTER", $port = 19133): bool
-    {
+    public function openSession($username, $address = "SPECTER", $port = 19133): bool{
         if (!isset($this->replyStore[$username])) {
             $player = new SpecterPlayer($this, $address, $port);
             $this->sessions->attach($player, $username);
@@ -199,8 +193,7 @@ class SpecterInterface implements SourceInterface
             $this->replyStore[$username] = [];
             $this->specter->getServer()->addPlayer($player);
 
-            $pk = new class() extends LoginPacket
-            {
+            $pk = new class() extends LoginPacket {
                 public function decodeAdditional()
                 {
                 }
@@ -253,8 +246,7 @@ class SpecterInterface implements SourceInterface
         }
     }
 
-    public function process(): void
-    {
+    public function process(): void{
         foreach ($this->ackStore as $name => $acks) {
             $player = $this->specter->getServer()->getPlayer($name);
             if ($player instanceof SpecterPlayer) {
