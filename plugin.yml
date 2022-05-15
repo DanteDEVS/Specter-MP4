@@ -1,6 +1,6 @@
 name: Specter
 version: 1.0
-author: Falkirks
+authors: ["Falkirks", "FaizDev", "ItsToxicGG"]
 main: specter\Specter
 api: ["4.0.0"]
 mcpe-protocol: [448, 471, 475, 486, 503]
@@ -10,9 +10,9 @@ commands:
     usage: /specter <action> <player> [params]
     permission: specter.command
     aliases: ['s']
+    
 permissions:
   specter:
     default: op
-    children:
-      specter.command:
-        default: op
+  specter.command:
+    default: op
