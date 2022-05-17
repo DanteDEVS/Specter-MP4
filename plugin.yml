@@ -1,18 +1,17 @@
 name: Specter
-version: 1.0
-authors: ["Falkirks", "FaizDev", "ItsToxicGG"]
+version: 2.1.0
+author: ["Falkirks", "FaizDev", "ItsToxicGG"]
 main: specter\Specter
-api: ["4.0.0"]
-mcpe-protocol: [448, 471, 475, 486, 503]
+api: [3.0.0]
 softdepend: ["iControlU"]
 commands:
   specter:
     usage: /specter <action> <player> [params]
     permission: specter.command
     aliases: ['s']
-    
 permissions:
   specter:
     default: op
-  specter.command:
-    default: op
+    children:
+      specter.command:
+        default: op
