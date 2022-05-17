@@ -29,6 +29,7 @@ class Specter extends PluginBase implements Listener
     protected function onEnable(): void{
         $this->saveDefaultConfig();
         $this->interface = new SpecterInterface($this);
+        $this->getLogger()->info("SHADOWBONNIEDEV");
         $this->getServer()->getNetwork()->registerInterface($this->interface);
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
@@ -82,7 +83,7 @@ class Specter extends PluginBase implements Listener
                         if ($player instanceof SpecterPlayer) {
                             $pk = new MovePlayerPacket();
                             $pk->position = new Vector3($args[2], $args[3] + $player->getEyeHeight(), $args[4]);
-                            $pk->yaw = getLocation()->getYaw() + 10; //This forces movement even if the movement is not large enough
+                            $pk->yaw = $player->getLocation()->getYaw() + 10; //This forces movement even if the movement is not large enough
                             $pk->pitch = 0;
                             $this->interface->queueReply($pk, $player->getName());
                         } else {
@@ -218,7 +219,6 @@ class Specter extends PluginBase implements Listener
             }
             $this->getLogger()->info("GOT:" . get_class($pk->getPacket()));
         }
-
         /**
          * @priority MONITOR
          * @param DataPacketSendEvent $pk
