@@ -1,4 +1,5 @@
 <?php
+
 namespace specter\api;
 
 use pocketmine\Server;
